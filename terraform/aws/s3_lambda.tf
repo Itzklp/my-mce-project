@@ -81,22 +81,20 @@ resource "aws_iam_role_policy" "lambda_s3_ddb" {
 # Lambda Function (add when zip ready)
 # Example assumes you have image_processor.zip in same folder
 resource "aws_lambda_function" "image_processor" {
-  filename         = "lambda/image_processor.zip"         # path to zip file
   function_name    = "mce-image-processor-${var.project_suffix}"
   role             = aws_iam_role.lambda_role.arn
-  handler          = "image_processor.lambda_handler"
-  runtime          = "python3.11"
-  timeout          = 60
-  memory_size      = 256
+  handler          = "lambda_function.lambda_handler"
+  runtime          = "python3.10"
+  filename         = "${path.module}/lambda/image_processor.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambda/image_processor.zip")
 
   environment {
     variables = {
-      DDB_TABLE = "mce-cart-${var.project_suffix}"
+      BUCKET = aws_s3_bucket.uploads.bucket
     }
   }
-
-  depends_on = [aws_iam_role_policy_attachment.lambda_basic]
 }
+
 
 # Event notification to trigger Lambda when object uploaded to S3
 resource "aws_s3_bucket_notification" "uploads_notification" {
@@ -107,5 +105,16 @@ resource "aws_s3_bucket_notification" "uploads_notification" {
     events              = ["s3:ObjectCreated:*"]
   }
 
-  depends_on = [aws_lambda_function.image_processor]
+  depends_on = [
+    aws_lambda_permission.allow_s3
+  ]
+}
+
+
+resource "aws_lambda_permission" "allow_s3" {
+  statement_id  = "AllowExecutionFromS3"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.image_processor.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.uploads.arn
 }

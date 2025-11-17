@@ -3,7 +3,7 @@ module "eks" {
   version = "19.15.3"
 
   cluster_name    = "mce-eks-${var.project_suffix}"
-  cluster_version = "1.27"
+  cluster_version = "1.29"
 
   vpc_id      = aws_vpc.main.id
   subnet_ids  = aws_subnet.private[*].id
