@@ -14,14 +14,12 @@ resource "aws_ecr_repository" "microservices" {
 
   name = "${each.key}-repo-${var.project_suffix}"
 
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
+  image_scanning_configuration { scan_on_push = true }
 
   tags = {
     Service = each.key
     Project = var.project_suffix
   }
 }
+
+

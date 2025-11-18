@@ -3,13 +3,12 @@ kind: Service
 metadata:
   name: order
   namespace: mce
-  labels:
-    app: order
 spec:
-  type: ClusterIP
   selector:
     app: order
+  type: ClusterIP
   ports:
     - name: http
       port: 80
       targetPort: 8000
+

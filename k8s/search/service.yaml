@@ -3,12 +3,10 @@ kind: Service
 metadata:
   name: search
   namespace: mce
-  labels:
-    app: search
 spec:
-  type: ClusterIP
   selector:
     app: search
+  type: ClusterIP
   ports:
     - name: http
       port: 80

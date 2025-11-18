@@ -3,14 +3,13 @@ kind: Service
 metadata:
   name: events-producer
   namespace: mce
-  labels:
-    app: events-producer
 spec:
-  type: ClusterIP
   selector:
     app: events-producer
+  type: ClusterIP
   ports:
     - name: http
       port: 80
-      targetPort: 8000
+      targetPort: 9000
+
 
