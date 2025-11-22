@@ -6,7 +6,7 @@ metadata:
 spec:
   project: mce-project
   source:
-    repoURL: https://github.com/milap01/multi-cloud-ecommerce.git
+    repoURL: https://github.com/itzklp/my-mce-project.git
     targetRevision: main
     path: k8s/order
   destination:
