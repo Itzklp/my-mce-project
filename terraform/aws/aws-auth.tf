@@ -11,10 +11,11 @@ resource "aws_eks_access_entry" "admin" {
 resource "aws_eks_access_policy_association" "admin_policy" {
   cluster_name  = aws_eks_access_entry.admin.cluster_name
   principal_arn = aws_eks_access_entry.admin.principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+  
+  # CHANGE THIS LINE:
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
 
   access_scope {
     type = "cluster"
-    # Removed 'namespaces = []' as it is optional and unnecessary for cluster-scope access
   }
 }

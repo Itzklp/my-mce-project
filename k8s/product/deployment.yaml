@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: product
-          image: 343938549827.dkr.ecr.us-east-1.amazonaws.com/product-repo-mce:latest
+          image: 150429528430.dkr.ecr.us-east-1.amazonaws.com/product-repo-mce-2:latest
           ports:
             - containerPort: 8000
           resources:
@@ -45,11 +45,13 @@ spec:
                 secretKeyRef:
                   name: mce-secrets
                   key: POSTGRES_USER
-            - name: DB_PASSWORD
+            - name: DB_PASS
               valueFrom:
                 secretKeyRef:
                   name: mce-secrets
                   key: POSTGRES_PASSWORD
+            - name: DB_NAME
+              value: "ecommerce"
             - name: KAFKA_BOOTSTRAP
               valueFrom:
                 configMapKeyRef:
